@@ -1,6 +1,6 @@
-# ERC20
+# ERC721
 
-A basic ERC20 token contract.
+A basic ERC721 token contract.
 
 ## Get started
 
@@ -9,7 +9,7 @@ Launch this smart contract set in the SettleMint Blockchain Transformation platf
 If you want to use it separately, bootstrap a new project using
 
 ```shell
-forge init my-erc20-token --template settlemint/solidity-token-erc20
+forge init my-erc721-token --template settlemint/solidity-token-erc721
 ```
 
 ## DX: Foundry
@@ -25,33 +25,33 @@ Foundry consists of:
 
 ## Documentation
 
-- https://console.settlemint.com/documentation/docs/using-platform/integrated-development-environment/
-- https://book.getfoundry.sh/
+- <https://console.settlemint.com/documentation/docs/using-platform/integrated-development-environment/>
+- <https://book.getfoundry.sh/>
 
 ## Usage
 
 ### Build
 
 ```shell
-$ forge build
+forge build
 ```
 
 ### Test
 
 ```shell
-$ forge test
+forge test
 ```
 
 ### Format
 
 ```shell
-$ forge fmt
+forge fmt
 ```
 
 ### Gas Snapshots
 
 ```shell
-$ forge snapshot
+forge snapshot
 ```
 
 ### Anvil
@@ -59,7 +59,7 @@ $ forge snapshot
 Anvil is a local development node, open a terminal in the IDE and launch anvil. You can then deploy to it using `make deploy-anvil`
 
 ```shell
-$ anvil
+anvil
 ```
 
 ### Deploy
@@ -67,31 +67,31 @@ $ anvil
 Deploy to a local anvil node:
 
 ```shell
-$ make deploy-anvil
+make deploy-anvil
 ```
 
 Deploy to the connected platform node:
 
 ```shell
-$ make deploy-btp
+make deploy-btp
 ```
 
 ### Cast
 
 ```shell
-$ cast <subcommand>
+cast <subcommand>
 ```
 
 ### Deploy your subgraph
 
 ```shell
-$ make subgraph
+make subgraph
 ```
 
 ### Help
 
 ```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+forge --help
+anvil --help
+cast --help
 ```
