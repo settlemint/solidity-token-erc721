@@ -27,14 +27,14 @@ deploy-anvil:
 	@forge create ./src/ExampleERC721.sol:ExampleERC721 --rpc-url anvil --interactive --constructor-args "GenericTokenMeta" "GTM" "ipfs://bafybeifc23vyo52i6dtlba7u7kmbcpc5oxfcwjaz3oisagq3kq7i2dbo6q/" "0xa5409ec958C83C3f309868babACA7c86DCB077c1" "0x813af93e50F0bCD2BAaFfa7E4dD4710adC01dE7d" | tee deployment-anvil.txt
 
 deploy-btp:
-	@eval $$(curl -H "x-auth-token: $${BPT_SERVICE_TOKEN}" -s $${BTP_CLUSTER_MANAGER_URL}/ide/foundry/$${BTP_SCS_ID}/env | sed 's/^/export /'); \
+	@eval $$(curl -H "x-auth-token: $${BTP_SERVICE_TOKEN}" -s $${BTP_CLUSTER_MANAGER_URL}/ide/foundry/$${BTP_SCS_ID}/env | sed 's/^/export /'); \
 	args=""; \
-	@if [ ! -z "${BTP_FROM}" ]; then \
+	if [ ! -z "$${BTP_FROM}" ]; then \
 		args="--unlocked --from $${BTP_FROM}"; \
 	else \
 		echo "\033[1;33mWARNING: No keys are activated on the node, falling back to interactive mode...\033[0m"; \
 		echo ""; \
-		args="--interactive;" \
+		args="--interactive"; \
 	fi; \
 	if [ ! -z "$${BTP_GAS_PRICE}" ]; then \
 		args="$$args --gas-price $${BTP_GAS_PRICE}"; \
@@ -53,15 +53,14 @@ subgraph:
 	@echo "Deploying the subgraph..."
 	@rm -Rf subgraph/subgraph.config.json
 	@DEPLOYED_ADDRESS=$$(grep "Deployed to:" deployment.txt | awk '{print $$3}') yq e -p=json -o=json '.datasources[0].address = env(DEPLOYED_ADDRESS) | .chain = env(BTP_NODE_UNIQUE_NAME)' subgraph/subgraph.config.template.json > subgraph/subgraph.config.json
-	@cd subgraph && pnpm graph-compiler --config subgraph.config.json --include node_modules/@openzeppelin/subgraphs/src/datasources ./datasources --export-schema --export-subgraph
+	@cd subgraph && npx graph-compiler --config subgraph.config.json --include node_modules/@openzeppelin/subgraphs/src/datasources ./datasources --export-schema --export-subgraph
 	@cd subgraph && yq e '.specVersion = "0.0.4"' -i generated/solidity-token-erc721.subgraph.yaml
 	@cd subgraph && yq e '.description = "Solidity Token ERC721"' -i generated/solidity-token-erc721.subgraph.yaml
 	@cd subgraph && yq e '.repository = "https://github.com/settlemint/solidity-token-erc721"' -i generated/solidity-token-erc721.subgraph.yaml
-	@cd subgraph && yq e '.indexerHints.prune = "auto"' -i generated/solidity-token-erc721.subgraph.yaml
 	@cd subgraph && yq e '.features = ["nonFatalErrors", "fullTextSearch", "ipfsOnEthereumContracts"]' -i generated/solidity-token-erc721.subgraph.yaml
 	@cd subgraph && npx graph codegen generated/solidity-token-erc721.subgraph.yaml
 	@cd subgraph && npx graph build generated/solidity-token-erc721.subgraph.yaml
-	@eval $$(curl -H "x-auth-token: $${BPT_SERVICE_TOKEN}" -s $${BTP_CLUSTER_MANAGER_URL}/ide/foundry/$${BTP_SCS_ID}/env | sed 's/^/export /')
+	@eval $$(curl -H "x-auth-token: $${BTP_SERVICE_TOKEN}" -s $${BTP_CLUSTER_MANAGER_URL}/ide/foundry/$${BTP_SCS_ID}/env | sed 's/^/export /'); \
 	if [ -z "$${BTP_MIDDLEWARE}" ]; then \
 		echo "\033[1;31mERROR: You have not launched a graph middleware for this smart contract set, aborting...\033[0m"; \
 		exit 1; \
