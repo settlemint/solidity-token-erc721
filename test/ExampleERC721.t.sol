@@ -169,4 +169,58 @@ contract ExampleERC721Test is Test {
         assertEq(exampleERC721.balanceOf(buyer), 0);
         vm.stopPrank();
     }
+
+    function testSupportsInterface() public {
+        // Check if the contract supports the ERC721 interface
+        assertTrue(exampleERC721.supportsInterface(type(IERC721).interfaceId));
+        // Check if the contract supports the Ownable interface
+        assertTrue(exampleERC721.supportsInterface(type(Ownable).interfaceId));
+        // Check if the contract supports the ERC721Enumerable interface
+        assertTrue(
+            exampleERC721.supportsInterface(type(ERC721Enumerable).interfaceId)
+        );
+        // Check if the contract supports the ERC721Royalty interface
+        assertTrue(
+            exampleERC721.supportsInterface(type(ERC721Royalty).interfaceId)
+        );
+        // Check if the contract supports the ERC721Burnable interface
+        assertTrue(
+            exampleERC721.supportsInterface(type(ERC721Burnable).interfaceId)
+        );
+        // Check if the contract supports a non-existent interface (should return false)
+        assertFalse(exampleERC721.supportsInterface(0xffffffff));
+    }
+
+    function testUpdate() public {
+        vm.prank(owner);
+        exampleERC721.collectReserves();
+        vm.prank(wallet);
+        exampleERC721.update(user, 1, address(0));
+        address newOwner = exampleERC721.ownerOf(1);
+        assertEq(newOwner, user);
+    }
+    function testIncreaseBalance() public {
+        address account = address(0x789);
+        uint128 value = 1;
+        vm.prank(owner);
+        vm.expectRevert();
+        exampleERC721.increaseBalance(account, value);
+    }
+
+    function testPauseUnpause() public {
+        vm.startPrank(owner);
+        exampleERC721.pause();
+        assertEq(exampleERC721.paused(), true);
+        exampleERC721.unpause();
+        assertEq(exampleERC721.paused(), false);
+    }
+
+    function testMintPauseUnpause() public {
+        vm.startPrank(owner);
+        exampleERC721.pauseMint();
+        assertEq(exampleERC721.mintPaused(), true);
+        exampleERC721.unpauseMint();
+        assertEq(exampleERC721.mintPaused(), false);
+    }
+
 }
