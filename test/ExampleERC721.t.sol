@@ -8,7 +8,7 @@ import "forge-std/console.sol";
 contract ExampleERC721Test is Test {
     ExampleERC721 exampleERC721;
     address owner = address(1);
-    address other = address(2);
+    address user = address(2);
     address proxyRegistryAddress = address(0);
     address payable wallet = payable(address(3));
 

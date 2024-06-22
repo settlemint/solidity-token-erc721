@@ -96,6 +96,14 @@ contract ExampleERC721 is
                 : "";
     }
 
+    function update(address to, uint256 tokenId, address auth)public returns(address) {
+        return _update(to, tokenId, auth);
+    }
+
+    function increaseBalance(address account, uint128 value) public {
+        _increaseBalance(account, value);
+    }
+
     function _update(
         address to,
         uint256 tokenId,
