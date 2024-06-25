@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.26;
+pragma solidity ^0.8.24;
 
 import "forge-std/Test.sol";
 import "../contracts/ExampleERC721.sol";
@@ -199,6 +199,7 @@ contract ExampleERC721Test is Test {
         address newOwner = exampleERC721.ownerOf(1);
         assertEq(newOwner, user);
     }
+
     function testIncreaseBalance() public {
         address account = address(0x789);
         uint128 value = 1;
@@ -222,5 +223,4 @@ contract ExampleERC721Test is Test {
         exampleERC721.unpauseMint();
         assertEq(exampleERC721.mintPaused(), false);
     }
-
 }
