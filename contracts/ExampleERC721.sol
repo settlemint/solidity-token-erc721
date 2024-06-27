@@ -212,7 +212,7 @@ contract ExampleERC721 is
     // POST SALE MANAGEMENT                                         //
     //////////////////////////////////////////////////////////////////
 
-    function withdraw() public {
+    function withdraw() public onlyOwner {
         _wallet.transfer(address(this).balance);
     }
 
