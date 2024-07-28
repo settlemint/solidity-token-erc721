@@ -1,3 +1,5 @@
+![OG](OG_Solidity.jpg)
+
 # ERC721
 
 A basic ERC721 token contract.
