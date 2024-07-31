@@ -139,6 +139,10 @@ contract ExampleERC721 is
         _setWhitelistMerkleRoot(whitelistMerkleRoot_);
     }
 
+    function disableWhitelistMerkleRoot() external onlyOwner {
+        _disableWhitelistMerkleRoot();
+    }
+
     function whitelistMint(uint256 count, uint256 allowance, bytes32[] calldata proof) public payable nonReentrant {
         require(_tokenId > 0, "Reserves not taken yet");
         require(_tokenId + count <= MAX_SUPPLY, "Exceeds max supply");
