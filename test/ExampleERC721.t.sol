@@ -186,4 +186,29 @@ contract ExampleERC721Test is Test {
         exampleERC721.unpauseMint();
         assertEq(exampleERC721.mintPaused(), false);
     }
+
+    function testDisableWhitelistMerkleRoot() public {
+        vm.prank(owner);
+        exampleERC721.setWhitelistMerkleRoot(0xab0ad1fd11f066c49fc6a47ba91cb9e6acf73026b82a0907c282efbadefd10c2);
+        vm.prank(owner);
+        exampleERC721.disableWhitelistMerkleRoot();
+        assertEq(exampleERC721._whitelistMerkleRoot(), 0x0);
+    }
+
+    function testGetAllowance() public {
+        vm.prank(owner);
+        exampleERC721.setWhitelistMerkleRoot(0xab0ad1fd11f066c49fc6a47ba91cb9e6acf73026b82a0907c282efbadefd10c2);
+
+        address whitelistedAddress = 0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65;
+        string memory allowance = "2";
+
+        bytes32[] memory proof = new bytes32[](1);
+        proof[0] = 0xe49914a3a1644dc92d0362120e4111d4373036cf861e3da9358d6fadafdb64cc;
+
+        vm.startPrank(whitelistedAddress);
+        string memory result = exampleERC721.getAllowance(allowance, proof);
+
+        assertEq(result, allowance);
+        vm.stopPrank();
+    }
 }
